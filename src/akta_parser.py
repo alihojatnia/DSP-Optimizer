@@ -102,10 +102,9 @@ def parse_akta_res(
         content = f.read()
 
     # FLEXIBLE BLOCK DETECTION
-    curve_block = (
-        re.search(r"Curve Data:.*?(?=\n\w+:|$)", content, re.DOTALL) or
-        re.search(r"\[Curve Data.*?\].*?(?=\n\[|\Z)", content, re.DOTALL)
-    )
+    curve_block = re.search(
+        r"Curve Data:.*?(?=\n\w+:|$)", content, re.DOTALL
+    ) or re.search(r"\[Curve Data.*?\].*?(?=\n\[|\Z)", content, re.DOTALL)
     if not curve_block:
         raise ValueError("No 'Curve Data' block found in .res file")
 
@@ -137,12 +136,14 @@ def parse_akta_res(
         df["UV_mAU"] = df.iloc[:, 1]
 
     # RENAME OTHER COLUMNS TO STANDARD
-    rename_map = {
-        col: "Volume_ml" for col in df.columns if "Volume" in col
-    }
-    rename_map.update({
-        col: "Conductivity_mS_cm" for col in df.columns if "Conductivity" in col and col != "UV_mAU"
-    })
+    rename_map = {col: "Volume_ml" for col in df.columns if "Volume" in col}
+    rename_map.update(
+        {
+            col: "Conductivity_mS_cm"
+            for col in df.columns
+            if "Conductivity" in col and col != "UV_mAU"
+        }
+    )
     df = df.rename(columns=rename_map)
 
     # NOW SAFE TO SELECT
@@ -150,10 +151,7 @@ def parse_akta_res(
 
     # PEAK DETECTION
     peaks, props = find_peaks(
-        df["UV_mAU"],
-        height=min_height,
-        distance=min_distance,
-        prominence=20
+        df["UV_mAU"], height=min_height, distance=min_distance, prominence=20
     )
 
     df["Is_Peak"] = 0

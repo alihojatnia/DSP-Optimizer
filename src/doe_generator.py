@@ -35,11 +35,13 @@ import os
 #     return df
 
 
-def generate_doe_smart(factors: dict, method: str = "fullfact", n_center: int = 3) -> pd.DataFrame:
+def generate_doe_smart(
+    factors: dict, method: str = "fullfact", n_center: int = 3
+) -> pd.DataFrame:
     """
     Smart DoE: fullfact, fracfact, or ccd
     """
-    os.makedirs('reports', exist_ok=True)
+    os.makedirs("reports", exist_ok=True)
 
     if method == "fullfact":
         df = build.full_fact(factors)
@@ -55,6 +57,6 @@ def generate_doe_smart(factors: dict, method: str = "fullfact", n_center: int = 
     else:
         raise ValueError("Method must be fullfact, fracfact, or ccd")
 
-    df.insert(0, 'Run', range(1, len(df) + 1))
-    df.to_csv('reports/doe_plan.csv', index=False)
+    df.insert(0, "Run", range(1, len(df) + 1))
+    df.to_csv("reports/doe_plan.csv", index=False)
     return df

@@ -11,7 +11,7 @@
 
 # tests/test_model.py
 import os
-from src.chrom_model import langmuir_breakthrough   # <-- NEW NAME
+from src.chrom_model import langmuir_breakthrough  # <-- NEW NAME
 
 
 def test_model():

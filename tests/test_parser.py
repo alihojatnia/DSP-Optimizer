@@ -18,6 +18,7 @@ from src.akta_parser import parse_akta_res
 import pandas as pd
 import os
 
+
 def test_parser():
     df = parse_akta_res("data/sample.res")
     assert isinstance(df, pd.DataFrame)

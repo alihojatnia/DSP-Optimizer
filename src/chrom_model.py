@@ -27,8 +27,11 @@ def langmuir_breakthrough(
         return [dCdt, dqdt]
 
     sol = solve_ivp(
-        ode, [0, t_max_min], [0, 0], method="LSODA",
-        t_eval=np.linspace(0, t_max_min, 500)
+        ode,
+        [0, t_max_min],
+        [0, 0],
+        method="LSODA",
+        t_eval=np.linspace(0, t_max_min, 500),
     )
 
     # Plot
