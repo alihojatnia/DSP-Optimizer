@@ -1,24 +1,14 @@
-import pyDOE2 as pyDOE
+# NEW (add this)
+from doepy import build
 import pandas as pd
 import numpy as np
 
 def generate_doe(factors: dict, n_runs: int = 8) -> pd.DataFrame:
     """factors: {'pH': [6.0, 8.0], 'NaCl_mM': [0, 500]}"""
-    names = list(factors.keys())
-    n_factors = len(names)
-    
-    # Full factorial or Box-Behnken
-    if n_factors <= 3:
-        design = pyDOE.ff2n(n_factors)
-    else:
-        design = pyDOE.bbdesign(n_factors)
-    
-    # Scale to levels
-    scaled = np.zeros((len(design), n_factors))
-    for i, (name, levels) in enumerate(factors.items()):
-        scaled[:, i] = np.linspace(levels[0], levels[1], len(design))
-    
-    df = pd.DataFrame(scaled, columns=names)
+    # doepy uses DataFrame directly
+    df = build.fullfact(
+        {name: [low, high] for name, (low, high) in factors.items()}
+    )
     df.insert(0, 'Run', range(1, len(df) + 1))
     
     # Save
