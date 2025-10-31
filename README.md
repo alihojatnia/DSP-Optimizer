@@ -8,8 +8,7 @@
 [![Python](https://img.shields.io/badge/Python-3.12-blue)](https://python.org)
 [![License](https://img.shields.io/badge/License-MIT-yellow)](LICENSE)
 
-##  **Live Demo**
-[https://dsp-optimizer.streamlit.app](https://dsp-optimizer.streamlit.app)  
+
 **Upload .res → Get DoE + Model in seconds!**
 
 ## Features
