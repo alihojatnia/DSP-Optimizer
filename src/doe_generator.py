@@ -1,6 +1,7 @@
 # src/doe_generator.py
 from doepy import build
 import pandas as pd
+import os
 
 
 # def generate_doe_smart(
