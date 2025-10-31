@@ -1,35 +1,50 @@
+# src/chrom_model.py
 import numpy as np
 from scipy.integrate import solve_ivp
 import matplotlib.pyplot as plt
+import os
 
 
-def breakthrough_curve(t_span=30, qmax=100, kd=1):
-    """Simple Langmuir breakthrough simulator"""
+def langmuir_breakthrough(
+    load_mg_ml: float = 50,
+    qmax: float = 120,
+    kd: float = 2.0,
+    flow_rate_ml_min: float = 1.0,
+    column_cv_ml: float = 1.0,
+    t_max_min: float = 100,
+) -> dict:
+    """
+    Simulate breakthrough curve using Transport Dispersive Model (simplified)
+    """
+    C0 = load_mg_ml  # inlet concentration
+    void = 0.4  # void fraction
+    tau = column_cv_ml * void / flow_rate_ml_min  # residence time
 
-    def langmuir(c):
-        return qmax * c / (kd + c)
+    def ode(t, y):
+        C, q = y
+        dCdt = (C0 - C) / tau - (1 - void) / void * (qmax * C / (kd + C) - q)
+        dqdt = qmax * C / (kd + C) - q
+        return [dCdt, dqdt]
 
-    def model(t, y):
-        c, q = y
-        dc_dt = 1 - c - (langmuir(c) - q)  # Simplified TDR
-        dq_dt = langmuir(c) - q
-        return [dc_dt, dq_dt]
+    sol = solve_ivp(
+        ode, [0, t_max_min], [0, 0], method="LSODA",
+        t_eval=np.linspace(0, t_max_min, 500)
+    )
 
-    sol = solve_ivp(model, [0, t_span], [0, 0], t_eval=np.linspace(0, t_span, 300))
-
-    # Plot & Save
-    fig, ax = plt.subplots()
-    ax.plot(sol.t, sol.y[0], label="C_out")
-    ax.set_xlabel("Time (min)")
-    ax.set_ylabel("Concentration")
-    ax.legend()
+    # Plot
+    os.makedirs("reports", exist_ok=True)
+    fig, ax = plt.subplots(figsize=(6, 4))
+    ax.plot(sol.t, sol.y[0] / C0, label="C/C₀", color="blue")
+    ax.set_xlabel("Column Volumes (CV)")
+    ax.set_ylabel("Normalized Concentration")
+    ax.set_title(f"Breakthrough: Load={load_mg_ml}, qmax={qmax}, Kd={kd}")
+    ax.grid(True, alpha=0.3)
     plt.tight_layout()
     plt.savefig("reports/breakthrough.png", dpi=300)
     plt.close()
 
-    return sol
-
-
-if __name__ == "__main__":
-    breakthrough_curve()
-    print("Breakthrough plot saved!")
+    return {
+        "time_min": sol.t.tolist(),
+        "C_norm": (sol.y[0] / C0).tolist(),
+        "q_mg_ml": sol.y[1].tolist(),
+    }
