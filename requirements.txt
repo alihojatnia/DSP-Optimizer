@@ -4,7 +4,7 @@ scipy>=1.11
 matplotlib>=3.7
 plotly>=5.15
 streamlit>=1.28
-doepy>=1.0.0
+doepy==0.0.1
 jinja2>=3.1
 weasyprint>=59
 pytest>=7.4
