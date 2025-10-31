@@ -6,7 +6,7 @@ import numpy as np
 def generate_doe(factors: dict, n_runs: int = 8) -> pd.DataFrame:
     """factors: {'pH': [6.0, 8.0], 'NaCl_mM': [0, 500]}"""
     # doepy uses DataFrame directly
-    df = build.fullfact(
+    df = build.full_fact(
         {name: [low, high] for name, (low, high) in factors.items()}
     )
     df.insert(0, 'Run', range(1, len(df) + 1))
