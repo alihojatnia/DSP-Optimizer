@@ -1,6 +1,6 @@
-# import pandas as pd
-# import os
-# from src.akta_parser import parse_akta_res
+import pandas as pd
+import os
+from src.akta_parser import parse_akta_res
 
 
 # def test_parser():
