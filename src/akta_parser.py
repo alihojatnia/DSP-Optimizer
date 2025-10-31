@@ -88,13 +88,6 @@
 
 
 # src/akta_parser.py
-import pandas as pd
-import re
-import os
-from scipy.signal import find_peaks
-from typing import Tuple, Optional
-
-
 def parse_akta_res(
     file_path: str,
     uv_col: str = "UV1_280nm",
@@ -111,7 +104,7 @@ def parse_akta_res(
     # FLEXIBLE BLOCK DETECTION
     curve_block = (
         re.search(r"Curve Data:.*?(?=\n\w+:|$)", content, re.DOTALL) or
-        re.search(r"\[Curve Data.*?\].*?(?=\n\[|\Z)", content, re.DOTALL)  # <-- NEW
+        re.search(r"\[Curve Data.*?\].*?(?=\n\[|\Z)", content, re.DOTALL)
     )
     if not curve_block:
         raise ValueError("No 'Curve Data' block found in .res file")
@@ -143,6 +136,16 @@ def parse_akta_res(
     if "UV_mAU" not in df.columns:
         df["UV_mAU"] = df.iloc[:, 1]
 
+    # RENAME OTHER COLUMNS TO STANDARD
+    rename_map = {
+        col: "Volume_ml" for col in df.columns if "Volume" in col
+    }
+    rename_map.update({
+        col: "Conductivity_mS_cm" for col in df.columns if "Conductivity" in col and col != "UV_mAU"
+    })
+    df = df.rename(columns=rename_map)
+
+    # NOW SAFE TO SELECT
     df = df[["Volume_ml", "UV_mAU", "Conductivity_mS_cm"]].copy()
 
     # PEAK DETECTION
