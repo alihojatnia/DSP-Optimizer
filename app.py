@@ -11,7 +11,7 @@ from chrom_model import breakthrough_curve
 st.set_page_config(page_title="DSP-Optimizer", layout="wide")
 
 st.title(" **DSP-Optimizer**")
-st.markdown("**ÄKTA → DoE → Model → Optimize** | Built for Novartis DSP")
+st.markdown("**ÄKTA → DoE → Model → Optimize** |")
 
 tab1, tab2, tab3 = st.tabs(["Parse ÄKTA", " DoE Planner", "Simulator"])
 
@@ -57,5 +57,5 @@ if st.button("Generate Full Report"):
     st.success("PDF saved to reports/report.pdf!")
 st.markdown("---")
 st.info(
-    "**Fork & Star** | [GitHub](.) | Built for **Novartis Downstream Process Development**"
+    "**Fork & Star**"
 )
