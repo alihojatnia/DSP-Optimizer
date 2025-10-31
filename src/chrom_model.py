@@ -48,3 +48,17 @@ def langmuir_breakthrough(
         "C_norm": (sol.y[0] / C0).tolist(),
         "q_mg_ml": sol.y[1].tolist(),
     }
+
+
+# import numpy as np
+
+# def langmuir_breakthrough(load, qmax, kd, column_cv_ml=1.0):
+#     """Simple normalized Langmuir breakthrough curve"""
+#     t = np.linspace(0, 20, 200)  # minutes
+#     C0 = load / column_cv_ml
+#     # Langmuir isotherm approximation
+#     C = C0 * t / (t + (kd * column_cv_ml / qmax))
+#     return {
+#         "time_min": t,
+#         "C_norm": np.clip(C / C0, 0, 1.1)  # Normalize and cap
+#     }
