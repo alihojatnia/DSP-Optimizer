@@ -1,6 +1,4 @@
-# DSP-Optimizer
-
-#  **DSP-Optimizer**
+## DSP-Optimizer
 
 **Automated Chromatography DoE + ÄKTA Parsing for Biologics DSP**  
 
@@ -11,14 +9,14 @@
 
 **Upload .res → Get DoE + Model in seconds!**
 
-## Features
+### Features
 - **Parse real ÄKTA UNICORN .res** (UV/Cond/peaks)
 - **DoE Generator** (pH/salt/load)
 - **Langmuir Breakthrough Simulator**
 - **Interactive Dashboard**
 - **CSV/PNG/PDF Export**
 
-## Quick Start
+### Quick Start
 ```bash
 pip install -r requirements.txt
 streamlit run app.py
