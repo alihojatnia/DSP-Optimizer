@@ -1,6 +1,6 @@
-# import pandas as pd
-# import os
-# from src.doe_generator import generate_doe
+import pandas as pd
+import os
+from src.doe_generator import generate_doe
 
 
 # def test_doe():
